@@ -162,6 +162,7 @@ local selected_slot       = 0
 local is_typing           = false
 local weapon_skins        = false
 local gta_plus_blip       = false
+local livery_lock         = false
 local weapon_editor_popup = false
 local filter_text         = ""
 local weapon_name         = ""
@@ -180,7 +181,7 @@ local function help_marker(text)
     end
 end
 
-function render_weapon_editor()
+local function render_weapon_editor()
 	ImGui.SetNextWindowSize(700, 420)
 	ImGui.OpenPopup("Weapon Editor")
 
@@ -245,6 +246,11 @@ script.register_looped("Gun Van", function()
 	if weapon_skins then
 		tunables.set_bool(1490225691, false)
 	end
+	
+	if livery_lock then
+		local value = locals.get_int("gunclub_shop", 142 + 747) | (1 << 8)
+		locals.set_int("gunclub_shop", 142 + 747, value)
+	end
 
 	if gta_plus_blip then
 		local gun_van_sprite = HUD.GET_FIRST_BLIP_INFO_ID(844)
@@ -287,6 +293,16 @@ gun_van_tab:add_imgui(function()
 	if on_tick then
 		if not weapon_skins then
 			tunables.set_bool(1490225691, true)
+		end
+	end
+	
+	livery_lock, on_tick = ImGui.Checkbox("Remove Livery Lock", livery_lock)
+	help_marker("Removes the hard-coded lock on special weapon liveries, such as Season's Greetings, Employee of the Month etc.")
+	
+	if on_tick then
+		if not livery_lock then
+			local value = locals.get_int("gunclub_shop", 142 + 747) & ~(1 << 8)
+			locals.set_int("gunclub_shop", 142 + 747, value)
 		end
 	end
 
