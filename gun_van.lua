@@ -1,36 +1,36 @@
 local gun_van_tab = gui.get_tab("Gun Van")
 
 local van_coordinates = {
-	vec3:new(-34.37, 6439.51, 31.44),
-	vec3:new(1706.32, 4824.61, 42.02),
-	vec3:new(1796.32, 3892.97, 34.21),
-	vec3:new(1335.34, 2752.96, 51.51),
-	vec3:new(799.10, 1216.43, 340.23),
-	vec3:new(-3190.18, 1081.97, 20.86),
-	vec3:new(-796.34, 5402.29, 34.13),
-	vec3:new(-19.44, 3045.60, 41.00),
-	vec3:new(2672.42, 1470.23, 24.50),
-	vec3:new(-1450.93, 2671.63, 3.55),
-	vec3:new(2345.21, 3051.81, 48.15),
-	vec3:new(1514.95, -2146.75, 77.20),
-	vec3:new(1142.62, -1358.91, 34.63),
-	vec3:new(-57.17, -2654.37, 6.00),
-	vec3:new(1909.82, 562.92, 175.72),
-	vec3:new(968.97, -1718.30, 30.42),
-	vec3:new(778.93, -3272.28, 6.01),
-	vec3:new(-583.03, -1639.34, 19.58),
-	vec3:new(728.72, -736.59, 26.21),
-	vec3:new(-1691.50, -449.29, 40.98),
-	vec3:new(-1325.46, -1164.10, 4.63),
-	vec3:new(-511.62, 49.19, 52.58),
-	vec3:new(317.99, 53.98, 91.33),
-	vec3:new(252.43, -767.82, 30.78),
-	vec3:new(-476.58, -721.91, 32.98),
-	vec3:new(900.15, 3603.80, 32.81),
-	vec3:new(-2164.85, 4284.01, 48.96),
-	vec3:new(1461.09, 6551.58, 14.35),
-	vec3:new(1095.81, -338.27, 67.22),
-	vec3:new(152.31, -1659.56, 29.29)
+	vec3:new(-29.532, 6435.136, 31.162),
+	vec3:new(1705.214, 4819.167, 41.75),
+	vec3:new(1795.522, 3899.753, 33.869),
+	vec3:new(1335.536, 2758.746, 51.099),
+	vec3:new(795.583, 1210.78, 338.962),
+	vec3:new(-3192.67, 1077.205, 20.594),
+	vec3:new(-789.719, 5400.921, 33.915),
+	vec3:new(-24.384, 3048.167, 40.703),
+	vec3:new(2666.786, 1469.324, 24.237),
+	vec3:new(-1454.966, 2667.503, 3.2),
+	vec3:new(2340.418, 3054.188, 47.888),
+	vec3:new(1509.183, -2146.795, 76.853),
+	vec3:new(1137.404, -1358.654, 34.322),
+	vec3:new(-57.208, -2658.793, 5.737),
+	vec3:new(1905.017, 565.222, 175.558),
+	vec3:new(974.484, -1718.798, 30.296),
+	vec3:new(779.077, -3266.297, 5.719),
+	vec3:new(-587.728, -1637.208, 19.611),
+	vec3:new(733.99, -736.803, 26.165),
+	vec3:new(-1694.632, -454.082, 40.712),
+	vec3:new(-1330.726, -1163.948, 4.313),
+	vec3:new(-496.618, 40.231, 52.316),
+	vec3:new(275.527, 66.509, 94.108),
+	vec3:new(260.928, -763.35, 30.559),
+	vec3:new(-478.025, -741.45, 30.299),
+	vec3:new(894.94, 3603.911, 32.56),
+	vec3:new(-2166.511, 4289.503, 48.733),
+	vec3:new(1465.633, 6553.67, 13.771),
+	vec3:new(1101.032, -335.172, 66.944),
+	vec3:new(149.683, -1655.674, 29.028)
 }
 
 local van_locations = {
@@ -66,28 +66,145 @@ local van_locations = {
 	"Davis - 30"
 }
 
+-- func_231, gunclub_shop
+local allowed_weapons = {
+	"WEAPON_KNIFE",
+	"WEAPON_NIGHTSTICK",
+	"WEAPON_HAMMER",
+	"WEAPON_BOTTLE",
+	"WEAPON_DAGGER",
+	"WEAPON_KNUCKLE",
+	"WEAPON_MACHETE",
+	"WEAPON_FLASHLIGHT",
+	"WEAPON_SWITCHBLADE",
+	"WEAPON_BATTLEAXE",
+	"WEAPON_POOLCUE",
+	"WEAPON_WRENCH",
+	"WEAPON_HATCHET",
+	"WEAPON_BAT",
+	"WEAPON_CROWBAR",
+	"WEAPON_PISTOL",
+	"WEAPON_PISTOL_MK2",
+	"WEAPON_COMBATPISTOL",
+	"WEAPON_APPISTOL",
+	"WEAPON_PISTOL50",
+	"WEAPON_SNSPISTOL",
+	"WEAPON_SNSPISTOL_MK2",
+	"WEAPON_HEAVYPISTOL",
+	"WEAPON_VINTAGEPISTOL",
+	"WEAPON_FLAREGUN",
+	"WEAPON_MARKSMANPISTOL",
+	"WEAPON_REVOLVER",
+	"WEAPON_REVOLVER_MK2",
+	"WEAPON_DOUBLEACTION",
+	"WEAPON_RAYPISTOL",
+	"WEAPON_CERAMICPISTOL",
+	"WEAPON_NAVYREVOLVER",
+	"WEAPON_GADGETPISTOL",
+	"WEAPON_STUNGUN_MP",
+	"WEAPON_MICROSMG",
+	"WEAPON_SMG",
+	"WEAPON_SMG_MK2",
+	"WEAPON_ASSAULTSMG",
+	"WEAPON_COMBATPDW",
+	"WEAPON_MACHINEPISTOL",
+	"WEAPON_MINISMG",
+	"WEAPON_MG",
+	"WEAPON_COMBATMG",
+	"WEAPON_COMBATMG_MK2",
+	"WEAPON_GUSENBERG",
+	"WEAPON_RAYCARBINE",
+	"WEAPON_ASSAULTRIFLE",
+	"WEAPON_ASSAULTRIFLE_MK2",
+	"WEAPON_CARBINERIFLE",
+	"WEAPON_CARBINERIFLE_MK2",
+	"WEAPON_ADVANCEDRIFLE",
+	"WEAPON_SPECIALCARBINE",
+	"WEAPON_SPECIALCARBINE_MK2",
+	"WEAPON_BULLPUPRIFLE",
+	"WEAPON_BULLPUPRIFLE_MK2",
+	"WEAPON_COMPACTRIFLE",
+	"WEAPON_MILITARYRIFLE",
+	"WEAPON_HEAVYRIFLE",
+	"WEAPON_TACTICALRIFLE",
+	"WEAPON_PUMPSHOTGUN",
+	"WEAPON_PUMPSHOTGUN_MK2",
+	"WEAPON_SAWNOFFSHOTGUN",
+	"WEAPON_ASSAULTSHOTGUN",
+	"WEAPON_BULLPUPSHOTGUN",
+	"WEAPON_MUSKET",
+	"WEAPON_HEAVYSHOTGUN",
+	"WEAPON_DBSHOTGUN",
+	"WEAPON_AUTOSHOTGUN",
+	"WEAPON_COMBATSHOTGUN",
+	"WEAPON_SNIPERRIFLE",
+	"WEAPON_HEAVYSNIPER",
+	"WEAPON_HEAVYSNIPER_MK2",
+	"WEAPON_MARKSMANRIFLE",
+	"WEAPON_MARKSMANRIFLE_MK2",
+	"WEAPON_PRECISIONRIFLE",
+	"WEAPON_GRENADELAUNCHER",
+	"WEAPON_RPG",
+	"WEAPON_MINIGUN",
+	"WEAPON_HOMINGLAUNCHER",
+	"WEAPON_COMPACTLAUNCHER",
+	"WEAPON_RAYMINIGUN",
+	"WEAPON_EMPLAUNCHER",
+	"WEAPON_RAILGUNXM3",
+	"WEAPON_TECPISTOL",
+	"WEAPON_FIREWORK",
+	"WEAPON_BATTLERIFLE",
+	"WEAPON_SNOWLAUNCHER"
+}
+
 local selected_loc        = 0
 local selected_slot       = 0
-local weapon_name         = ""
 local is_typing           = false
-local gta_plus_blip       = false
 local weapon_skins        = false
+local gta_plus_blip       = false
 local weapon_editor_popup = false
+local filter_text         = ""
+local weapon_name         = ""
 
 local gun_van_loc = 0
 
+local function help_marker(text)
+    ImGui.SameLine()
+    ImGui.TextDisabled("(?)")
+    if ImGui.IsItemHovered() then
+        ImGui.BeginTooltip()
+        ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35)
+        ImGui.TextUnformatted(text)
+        ImGui.PopTextWrapPos()
+        ImGui.EndTooltip()
+    end
+end
+
 function render_weapon_editor()
-	ImGui.SetNextWindowSize(700, 250)
+	ImGui.SetNextWindowSize(700, 420)
 	ImGui.OpenPopup("Weapon Editor")
 
-	if ImGui.BeginPopupModal("Weapon Editor", weapon_editor_popup, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove) then
+	if ImGui.BeginPopupModal("Weapon Editor", weapon_editor_popup, ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.Modal) then
 		selected_slot = ImGui.Combo("Select Slot", selected_slot, { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }, 10)
-		
-		weapon_name = ImGui.InputText("Weapon Name", weapon_name, 100)
+
+		filter_text = ImGui.InputText("Weapon Name", filter_text, 100)
 		if ImGui.IsItemActive() then
 			is_typing = true
 		else
 			is_typing = false
+		end
+
+		if ImGui.BeginListBox("##weapons", 450, 200) then
+			for index, item in ipairs(allowed_weapons) do
+				local display_name = weapons.get_weapon_display_name(item)
+				if string.find(display_name:lower(), filter_text:lower()) then
+					if ImGui.Selectable(display_name) then
+						filter_text = display_name
+						weapon_name = item
+					end
+				end
+			end
+			ImGui.EndListBox()
 		end
 
 		if ImGui.Button("Set Weapon") then
@@ -107,6 +224,8 @@ function render_weapon_editor()
 		end
 
 		if ImGui.Button("Close") then
+			selected_slot       = 0
+			filter_text         = ""
 			weapon_name         = ""
 			weapon_editor_popup = false
 			ImGui.CloseCurrentPopup()
@@ -116,26 +235,24 @@ function render_weapon_editor()
 	end
 end
 
-function set_blip_always_visible()
-	local gun_van_sprite = HUD.GET_FIRST_BLIP_INFO_ID(844)
-
-	tunables.set_float(15999531, 10000.0)
-	if HUD.DOES_BLIP_EXIST(gun_van_sprite) then
-		HUD.SET_BLIP_AS_SHORT_RANGE(gun_van_sprite, false)
-	end
-end
-
 script.register_looped("Gun Van", function()
 	gun_van_loc = globals.get_int(2652572 + 2650)
 
 	if is_typing then
 		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
 	end
-	if gta_plus_blip then
-		set_blip_always_visible()
-	end
+
 	if weapon_skins then
 		tunables.set_bool(1490225691, false)
+	end
+
+	if gta_plus_blip then
+		local gun_van_sprite = HUD.GET_FIRST_BLIP_INFO_ID(844)
+
+		tunables.set_float(15999531, 10000.0)
+		if HUD.DOES_BLIP_EXIST(gun_van_sprite) then
+			HUD.SET_BLIP_AS_SHORT_RANGE(gun_van_sprite, false)
+		end
 	end
 end)
 
@@ -164,19 +281,21 @@ gun_van_tab:add_imgui(function()
 		end)
 	end
 
-	gta_plus_blip, on_tick = ImGui.Checkbox("Blip Always Visible", gta_plus_blip)
-
-	if on_tick then
-		if not gta_plus_blip then
-			tunables.set_float(15999531, 500.0)
-		end
-	end
-
 	weapon_skins, on_tick = ImGui.Checkbox("Weapon Skins", weapon_skins)
+	help_marker("Enables the special liveries for Knife and Baseball Bat.")
 
 	if on_tick then
 		if not weapon_skins then
 			tunables.set_bool(1490225691, true)
+		end
+	end
+
+	gta_plus_blip, on_tick = ImGui.Checkbox("Blip Always Visible", gta_plus_blip)
+	help_marker("The Gun Van will always be blipped on the map, just like in GTA+.")
+
+	if on_tick then
+		if not gta_plus_blip then
+			tunables.set_float(15999531, 500.0)
 		end
 	end
 
