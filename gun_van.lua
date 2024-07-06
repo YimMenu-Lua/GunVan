@@ -1,3 +1,5 @@
+-- TO-DO: Find out a way to permanently equip the Bottom Dollar Livery for Stungun
+
 local gun_van_tab = gui.get_tab("Gun Van")
 
 local van_coordinates = {
@@ -162,7 +164,6 @@ local selected_slot       = 0
 local is_typing           = false
 local weapon_skins        = false
 local gta_plus_blip       = false
-local livery_lock         = false
 local weapon_editor_popup = false
 local filter_text         = ""
 local weapon_name         = ""
@@ -237,7 +238,7 @@ local function render_weapon_editor()
 end
 
 script.register_looped("Gun Van", function()
-	gun_van_loc = globals.get_int(2652572 + 2650)
+	gun_van_loc = globals.get_int(2652592 + 2671)
 
 	if is_typing then
 		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -245,11 +246,6 @@ script.register_looped("Gun Van", function()
 
 	if weapon_skins then
 		tunables.set_bool(1490225691, false)
-	end
-	
-	if livery_lock then
-		local value = locals.get_int("gunclub_shop", 142 + 747) | (1 << 8)
-		locals.set_int("gunclub_shop", 142 + 747, value)
 	end
 
 	if gta_plus_blip then
@@ -263,109 +259,99 @@ script.register_looped("Gun Van", function()
 end)
 
 gun_van_tab:add_imgui(function()
-	if weapon_editor_popup then
-		render_weapon_editor()
-	end
+    if weapon_editor_popup then
+        render_weapon_editor()
+    end
 
-	ImGui.Text("Current Location: " .. (gun_van_loc ~= -1 and gun_van_loc + 1 or "N/A"))
+    ImGui.Text("Current Location: " .. (gun_van_loc ~= -1 and gun_van_loc + 1 or "N/A"))
 
-	ImGui.SetNextItemWidth(265)
-	selected_loc = ImGui.Combo("##selected_loc", selected_loc, van_locations, 30)
+    ImGui.SetNextItemWidth(265)
+    selected_loc = ImGui.Combo("##selected_loc", selected_loc, van_locations, 30)
 
-	ImGui.SameLine()
+    ImGui.SameLine()
 
-	if ImGui.Button("Set Location") then
-		globals.set_int(2652572 + 2650, selected_loc)
-	end
+    if ImGui.Button("Set Location") then
+        globals.set_int(2652592 + 2671, selected_loc)
+    end
 
-	ImGui.SameLine()
+    ImGui.SameLine()
 
-	if ImGui.Button("Teleport") then
-		script.run_in_fiber(function()
-			local coords = van_coordinates[selected_loc + 1]
-			PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
-		end)
-	end
+    if ImGui.Button("Teleport") then
+        script.run_in_fiber(function()
+            local coords = van_coordinates[selected_loc + 1]
+            PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
+        end)
+    end
 
-	weapon_skins, on_tick = ImGui.Checkbox("Weapon Skins", weapon_skins)
-	help_marker("Enables the special liveries for Knife and Baseball Bat.")
+    weapon_skins, on_tick = ImGui.Checkbox("Weapon Skins", weapon_skins)
+    help_marker("Enables the special liveries for Knife and Baseball Bat.")
 
-	if on_tick then
-		if not weapon_skins then
-			tunables.set_bool(1490225691, true)
-		end
-	end
-	
-	livery_lock, on_tick = ImGui.Checkbox("Remove Livery Lock", livery_lock)
-	help_marker("Removes the hard-coded lock on special weapon liveries, such as Season's Greetings, Employee of the Month etc.")
-	
-	if on_tick then
-		if not livery_lock then
-			local value = locals.get_int("gunclub_shop", 142 + 747) & ~(1 << 8)
-			locals.set_int("gunclub_shop", 142 + 747, value)
-		end
-	end
+    if on_tick then
+        if not weapon_skins then
+            tunables.set_bool(1490225691, true)
+        end
+    end
 
-	gta_plus_blip, on_tick = ImGui.Checkbox("Blip Always Visible", gta_plus_blip)
-	help_marker("The Gun Van will always be blipped on the map, just like in GTA+.")
+    gta_plus_blip, on_tick = ImGui.Checkbox("Blip Always Visible", gta_plus_blip)
+    help_marker("The Gun Van will always be blipped on the map, just like in GTA+.")
 
-	if on_tick then
-		if not gta_plus_blip then
-			tunables.set_float(15999531, 500.0)
-		end
-	end
+    if on_tick then
+        if not gta_plus_blip then
+            tunables.set_float(15999531, 500.0)
+        end
+    end
 
-	ImGui.Separator()
+    ImGui.Separator()
 
-	if ImGui.TreeNode("Weapons") then
-		for i = 0, 9 do
-			local weapon_hash = tunables.get_int("XM22_GUN_VAN_SLOT_WEAPON_TYPE_" .. i)
+    if ImGui.TreeNode("Weapons") then
+        for i = 0, 9 do
+            local weapon_hash = tunables.get_int("XM22_GUN_VAN_SLOT_WEAPON_TYPE_" .. i)
 
-			if weapon_hash ~= 0 then
-				local weapon_name     = weapons.get_weapon_display_name(weapon_hash)
-				local weapon_discount = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_WEAPON_DISCOUNT_" .. i) * 100.0)
+            if weapon_hash ~= 0 then
+                local weapon_name = weapons.get_weapon_display_name(weapon_hash)
+                local weapon_discount = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_WEAPON_DISCOUNT_" .. i) * 100.0)
 
-				ImGui.Text(i + 1 .. " - " .. weapon_name .. " (" .. weapon_discount .. "%)")
-			end
-		end
+                ImGui.Text(i + 1 .. " - " .. weapon_name .. " (" .. weapon_discount .. "%)")
+            end
+        end
 
-		if ImGui.Button("Edit Weapons") then
-			weapon_editor_popup = true
-		end
+        if ImGui.Button("Edit Weapons") then
+            weapon_editor_popup = true
+        end
 
-		ImGui.Separator()
-		ImGui.TreePop()
-	end
+        ImGui.Separator()
+        ImGui.TreePop()
+    end
 
-	if ImGui.TreeNode("Throwables") then
-		for i = 0, 2 do
-			local throwable_hash = tunables.get_int("XM22_GUN_VAN_SLOT_THROWABLE_TYPE_" .. i)
+    if ImGui.TreeNode("Throwables") then
+        for i = 0, 2 do
+            local throwable_hash = tunables.get_int("XM22_GUN_VAN_SLOT_THROWABLE_TYPE_" .. i)
 
-			if throwable_hash ~= 0 then
-				local throwable_name     = weapons.get_weapon_display_name(throwable_hash)
-				local throwable_discount = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_THROWABLE_DISCOUNT_" .. i) * 100.0)
+            if throwable_hash ~= 0 then
+                local throwable_name = weapons.get_weapon_display_name(throwable_hash)
+                local throwable_discount = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_THROWABLE_DISCOUNT_" .. i) * 100.0)
 
-				ImGui.Text(i + 1 .. " - " .. throwable_name .. " (" .. throwable_discount .. "%)")
-			end
-		end
+                ImGui.Text(i + 1 .. " - " .. throwable_name .. " (" .. throwable_discount .. "%)")
+            end
+        end
 
-		ImGui.Separator()
-		ImGui.TreePop()
-	end
+        ImGui.Separator()
+        ImGui.TreePop()
+    end
 
-	if ImGui.TreeNode("Body Armor") then
-		local armour_discounts = {}
+    if ImGui.TreeNode("Body Armor") then
+        local armour_discounts = {}
 
-		for i = 0, 4 do
-			armour_discounts[i + 1] = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_ARMOUR_DISCOUNT_" .. i) * 100.0)
-		end
+        for i = 0, 4 do
+            armour_discounts[i + 1] = math.floor(tunables.get_float("XM22_GUN_VAN_SLOT_ARMOUR_DISCOUNT_" .. i) * 100.0)
+        end
 
-		ImGui.Text("Super Light Armor (" .. armour_discounts[1] .. "%)")
-		ImGui.Text("Light Armor (" .. armour_discounts[2] .. "%)")
-		ImGui.Text("Standard Armor (" .. armour_discounts[3] .. "%)")
-		ImGui.Text("Heavy Armor (" .. armour_discounts[4] .. "%)")
-		ImGui.Text("Super Heavy Armor (" .. armour_discounts[5] .. "%)")
+        ImGui.Text("Super Light Armor (" .. armour_discounts[1] .. "%)")
+        ImGui.Text("Light Armor (" .. armour_discounts[2] .. "%)")
+        ImGui.Text("Standard Armor (" .. armour_discounts[3] .. "%)")
+        ImGui.Text("Heavy Armor (" .. armour_discounts[4] .. "%)")
+        ImGui.Text("Super Heavy Armor (" .. armour_discounts[5] .. "%)")
 
-		ImGui.TreePop()
-	end
+        ImGui.TreePop()
+    end
 end)
