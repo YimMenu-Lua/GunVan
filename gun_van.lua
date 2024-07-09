@@ -68,7 +68,7 @@ local van_locations = {
 	"Davis - 30"
 }
 
--- func_231, gunclub_shop
+-- func_203, gunclub_shop
 local allowed_weapons = {
 	"WEAPON_KNIFE",
 	"WEAPON_NIGHTSTICK",
@@ -85,6 +85,7 @@ local allowed_weapons = {
 	"WEAPON_HATCHET",
 	"WEAPON_BAT",
 	"WEAPON_CROWBAR",
+	"WEAPON_STUNROD",
 	"WEAPON_PISTOL",
 	"WEAPON_PISTOL_MK2",
 	"WEAPON_COMBATPISTOL",
