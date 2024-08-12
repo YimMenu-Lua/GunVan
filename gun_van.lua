@@ -2,39 +2,6 @@
 
 local gun_van_tab = gui.get_tab("Gun Van")
 
-local van_coordinates = {
-	vec3:new(-29.532, 6435.136, 31.162),
-	vec3:new(1705.214, 4819.167, 41.75),
-	vec3:new(1795.522, 3899.753, 33.869),
-	vec3:new(1335.536, 2758.746, 51.099),
-	vec3:new(795.583, 1210.78, 338.962),
-	vec3:new(-3192.67, 1077.205, 20.594),
-	vec3:new(-789.719, 5400.921, 33.915),
-	vec3:new(-24.384, 3048.167, 40.703),
-	vec3:new(2666.786, 1469.324, 24.237),
-	vec3:new(-1454.966, 2667.503, 3.2),
-	vec3:new(2340.418, 3054.188, 47.888),
-	vec3:new(1509.183, -2146.795, 76.853),
-	vec3:new(1137.404, -1358.654, 34.322),
-	vec3:new(-57.208, -2658.793, 5.737),
-	vec3:new(1905.017, 565.222, 175.558),
-	vec3:new(974.484, -1718.798, 30.296),
-	vec3:new(779.077, -3266.297, 5.719),
-	vec3:new(-587.728, -1637.208, 19.611),
-	vec3:new(733.99, -736.803, 26.165),
-	vec3:new(-1694.632, -454.082, 40.712),
-	vec3:new(-1330.726, -1163.948, 4.313),
-	vec3:new(-496.618, 40.231, 52.316),
-	vec3:new(275.527, 66.509, 94.108),
-	vec3:new(260.928, -763.35, 30.559),
-	vec3:new(-478.025, -741.45, 30.299),
-	vec3:new(894.94, 3603.911, 32.56),
-	vec3:new(-2166.511, 4289.503, 48.733),
-	vec3:new(1465.633, 6553.67, 13.771),
-	vec3:new(1101.032, -335.172, 66.944),
-	vec3:new(149.683, -1655.674, 29.028)
-}
-
 local van_locations = {
 	"Paleto Bay - 1",
 	"Grapeseed - 2",
@@ -279,7 +246,7 @@ gun_van_tab:add_imgui(function()
 
     if ImGui.Button("Teleport") then
         script.run_in_fiber(function()
-            local coords = van_coordinates[selected_loc + 1]
+            local coords = scr_function.call_script_function("freemode", "GGVC", "2D 00 02 00 00 74 61 ? ? ? 32", "vector3", {})
             PED.SET_PED_COORDS_KEEP_VEHICLE(self.get_ped(), coords.x, coords.y, coords.z)
         end)
     end
@@ -294,7 +261,7 @@ gun_van_tab:add_imgui(function()
     end
 
     gta_plus_blip, on_tick = ImGui.Checkbox("Blip Always Visible", gta_plus_blip)
-    help_marker("The Gun Van will always be blipped on the map, just like in GTA+.")
+    help_marker("Makes Gun Van always blipped on the map just like in GTA+.")
 
     if on_tick then
         if not gta_plus_blip then
