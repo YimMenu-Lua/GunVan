@@ -206,7 +206,7 @@ local function render_weapon_editor()
 end
 
 script.register_looped("Gun Van", function()
-	gun_van_loc = globals.get_int(2652592 + 2671)
+	gun_van_loc = globals.get_int(2652568 + 2706)
 
 	if is_typing then
 		PAD.DISABLE_ALL_CONTROL_ACTIONS(0)
@@ -239,7 +239,7 @@ gun_van_tab:add_imgui(function()
     ImGui.SameLine()
 
     if ImGui.Button("Set Location") then
-        globals.set_int(2652592 + 2671, selected_loc)
+        globals.set_int(2652568 + 2706, selected_loc)
     end
 
     ImGui.SameLine()
